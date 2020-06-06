@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Article List{% endblock %}
+{% block content %}
+{% include 'articles/statistic.html' %}
+    <h1>Daftar Article :</h1>
+    {% for article in articles %}
+        <h2>
+            <a href="{% url 'articles:detail' article.id %}"> {{ article.title }}</a>
+        </h2>
+        <h3>
+        Published {{ article.published_at }} on category {{ article.category }}
+        </h3>
+    {% endfor %}
+{% endblock %}

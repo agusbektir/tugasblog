@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+ <p>Silahkan Login :</p>
+ <form method="post">
+ {{ form.as_p }}
+ {% csrf_token %}
+ <input type="submit" value="log In">
+ </form>
+ <p>Belum register ? <a href="{% url 'members:register' %}">daftar disini</a></p>
+{% endblock %}

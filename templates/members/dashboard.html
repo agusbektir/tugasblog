@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}My Dashboard{% endblock %}
+{% block content %}
+    <h1>My Dashboard,</h1>
+    <p>Username : {{ user.username }}</p>
+    <p>Email : {{ user.email }}</p>
+    <hr/>
+    <h1>Daftar Pertanyaan :</h1>
+    <table style="width: 100%">
+        <colgroup>
+           <col style="width: 5%">
+           <col style="width: 20%">
+           <col style="width: 10%">
+           <col style="width: 15%">
+           <col style="width: 30%">
+        </colgroup>
+        <thead>
+            <tr>
+                <td>Kategori</td>
+                <td>Pertanyaan</td>
+                <td>Author</td>
+                <td>Dibuat</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in questions %}
+                <tr>
+                    <td>{{ question.category }}</td>
+                    <td><a href="{% url 'articles:detail_askme' question.id %}">{{ question.title }}</a></td>
+                    <td><a href="{% url 'members:profile' question.author %}">{{ question.author }}</a></td>
+                    <td>{{ question.created_at }}</td>
+                    <td>
+                        <a href="{% url 'articles:delete_askme' question.id %}"><button>Delete</button></a>
+                        <a href="{% url 'articles:edit_askme' question.id %}"><button>Edit</button></a>
+                    </td>
+                </tr>
+            {% empty %}
+                <p>Belum ada pertanyaan.</p>
+            {% endfor %}
+        </tbody>
+    </table>
+    <hr/>
+{% endblock %}

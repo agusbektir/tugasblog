@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Question List{% endblock %}
+{% block content %}
+    <a href="{% url 'articles:submit_askme' %}">
+        <button>New Question</button>
+    </a>
+    <h1>Daftar Pertanyaan :</h1>
+    <table style="width: 50%">
+        <colgroup>
+           <col style="width: 5%">
+           <col style="width: 20%">
+           <col style="width: 10%">
+           <col style="width: 15%">
+        </colgroup>
+        <thead>
+            <tr>
+                <td>Kategori</td>
+                <td>Pertanyaan</td>
+                <td>Author</td>
+                <td>Dibuat</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in questions %}
+                <tr>
+                    <td>{{ question.category }}</td>
+                    <td><a href="{% url 'articles:detail_askme' question.id %}">{{ question.title }}</a></td>
+                    <td><a href="{% url 'members:profile' question.author %}">{{ question.author }}</a></td>
+                    <td>{{ question.created_at }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

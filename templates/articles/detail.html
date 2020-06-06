@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title }}{% endblock %}
+{% block content %}
+    <h1>{{ article.title }}</h1>
+    <h2>Published by {{ article.published_at }} on {{ article.category }}</h2>
+    <p>{{ article.content }}</p>
+    <hr/>
+    {% for comment in comments %}
+        <p>{{ comment.content }} by
+            <a href="{% url 'members:profile' comment.author %}">{{ comment.author }}</a></p>
+    {% empty %}
+        <p>Belum ada komentar.</p>
+    {% endfor %}
+    <hr/>
+    <h2>Add a new comment</h2>
+    <form action="{% url 'articles:comment' article.id %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p><input type="submit" value="Submit"></p>
+    </form>
+{% endblock %}
