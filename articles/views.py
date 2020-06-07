@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count
+from django.db.models import Count, F
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
@@ -8,16 +8,17 @@ from articles.models import Article, Comment, AskMe
 from members.models import Member
 
 
+
 def list_article_page(request):
-    articles = Article.objects.all()
     most_commented_articles = (Article.objects.annotate(total_comment=Count('comment'))
                                .order_by('-total_comment')[:1])
     most_commenter = (Member.objects.annotate(total_comment=Count('comment'))
                           .order_by('-total_comment')[:1])
+    articles = Article.objects.all()
     context = {
         'articles':articles,
         'most_commented_articles': most_commented_articles,
-        'most_commenter': most_commenter
+        'most_commenter': most_commenter,
     }
     return render(request, 'articles/list.html', context)
 
@@ -35,10 +36,12 @@ def detail_article_page(request, article_id):
     form = CommentForm()
     article = get_object_or_404(Article, id=article_id)
     comments = Comment.objects.filter(article=article_id)
+    views = Article.objects.filter(id=article.id).update(views=F('views') + 1)
     context = {
         'form':form,
         'article':article,
-        'comments':comments
+        'comments':comments,
+        'views':views
     }
     return render(request, 'articles/detail.html', context)
 
@@ -84,8 +87,10 @@ def submit_askme_page(request):
 
 def detail_askme_page(request, askme_id):
     question = get_object_or_404(AskMe, id=askme_id)
+    views_count = Article.objects.filter(id=article.id).update(views=F('views') + 1)
     context = {
-        'question':question
+        'question':question,
+        'views_count':views_count
     }
     return render(request, 'articles/detail_askme.html', context)
 
@@ -104,14 +109,3 @@ def edit_askme_page(request, askme_id):
         'form': form,
     }
     return render(request, 'articles/submit_askme.html', context)
-
-# def statistic_page(request):
-#     most_commented_articles = (Article.objects.annotate(total_comment=Count('comment'))
-#                                .order_by('-total_comment'))
-#     most_commenter = (Member.objects.annotate(total_comment=Count('comment'))
-#                           .order_by('-total_comment'))
-#     context = {
-#         'most_commented_articles': most_commented_articles,
-#         'most_commenter':most_commenter
-#     }
-#     return render(request, 'articles/statistic.html', context)

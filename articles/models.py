@@ -16,10 +16,14 @@ class Article(models.Model):
     slug = models.SlugField()
     published_at = models.DateTimeField(null=True)
     is_published = models.BooleanField(default=False)
+    views = models.PositiveIntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ['-published_at']
 
 class Comment(models.Model):
     content = models.TextField()

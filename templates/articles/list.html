@@ -3,13 +3,31 @@
 {% block title %}Article List{% endblock %}
 {% block content %}
 {% include 'articles/statistic.html' with most_commented_articles=most_commented_articles %}
-    <h1>Daftar Article :</h1>
-    {% for article in articles %}
-        <h2>
-            <a href="{% url 'articles:detail' article.id %}"> {{ article.title }}</a>
-        </h2>
-        <h3>
-        Published {{ article.published_at }} on category {{ article.category }}
-        </h3>
-    {% endfor %}
+<p>Daftar Article :</p>
+<table style="width: 100%">
+    <colgroup>
+       <col style="width: 5%">
+       <col style="width: 5%">
+       <col style="width: 5%">
+       <col style="width: 5%">
+    </colgroup>
+    <thead>
+        <tr>
+            <td>Judul</td>
+            <td>Terbit</td>
+            <td>Category</td>
+            <td>Dilihat</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for article in articles %}
+            <tr>
+                <td><a href="{% url 'articles:detail' article.id %}">{{ article.title }}</a></td>
+                <td>{{ article.published_at }}</td>
+                <td>{{ article.category }}</td>
+                <td>{{ article.views }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

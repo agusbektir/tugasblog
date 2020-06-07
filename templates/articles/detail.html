@@ -4,6 +4,7 @@
     <h1>{{ article.title }}</h1>
     <h2>Published by {{ article.published_at }} on {{ article.category }}</h2>
     <p>{{ article.content }}</p>
+    <p>Dilihat : {{ article.views }}</p>
     <hr/>
     {% for comment in comments %}
         <p>{{ comment.content }} by
