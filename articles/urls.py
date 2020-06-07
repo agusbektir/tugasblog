@@ -9,7 +9,6 @@ from articles.views import (
     detail_askme_page,
     delete_askme_page,
     edit_askme_page,
-    statistic_page
 )
 
 app_name = 'articles'
@@ -24,5 +23,4 @@ urlpatterns = [
     path('askme/detail/<int:askme_id>', detail_askme_page, name='detail_askme'),
     path('delete/<int:askme_id>', delete_askme_page, name='delete_askme'),
     path('edit/<int:askme_id>', edit_askme_page, name='edit_askme'),
-    path('statistic/', statistic_page, name='statistic'),
 ]

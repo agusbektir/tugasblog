@@ -2,7 +2,7 @@
 
 {% block title %}Article List{% endblock %}
 {% block content %}
-{% include 'articles/statistic.html' %}
+{% include 'articles/statistic.html' with most_commented_articles=most_commented_articles %}
     <h1>Daftar Article :</h1>
     {% for article in articles %}
         <h2>

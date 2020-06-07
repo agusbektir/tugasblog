@@ -1,9 +1,8 @@
-<h1>Statistik :</h1>
 <h1>Article dengan komentar terbanyak :</h1>
 <table style="width: 100%">
     <colgroup>
-       <col style="width: 5%">
-       <col style="width: 20%">
+       <col style="width: 50%">
+       <col style="width: 50%">
     </colgroup>
     <thead>
         <tr>
@@ -12,10 +11,10 @@
         </tr>
     </thead>
     <tbody>
-        {% for article in most_commented_articles %}
+        {% for articles in most_commented_articles %}
             <tr>
-                <td>{{ article.title }}</td>
-                <td>{{ article.total_comment }}</td>
+                <td><a href="{% url 'articles:detail' articles.id %}">{{ articles.title }}</a></td>
+                <td>{{ articles.total_comment }}</td>
             </tr>
         {% endfor %}
     </tbody>
@@ -23,8 +22,8 @@
 <h1>Member dengan komentar terbanyak :</h1>
 <table style="width: 100%">
     <colgroup>
-       <col style="width: 5%">
-       <col style="width: 20%">
+       <col style="width: 50%">
+       <col style="width: 50%">
     </colgroup>
     <thead>
         <tr>
@@ -35,8 +34,8 @@
     <tbody>
         {% for commenter in most_commenter %}
             <tr>
-                <td>{{ commenter.author }}</td>
-                <td>{{ article.total_comment }}</td>
+                <td>{{ commenter.user.member }}</td>
+                <td>{{ commenter.total_comment }}</td>
             </tr>
         {% endfor %}
     </tbody>

@@ -5,12 +5,19 @@ from django.urls import reverse
 
 from articles.forms import ArticleForm, CommentForm, AskMeForm
 from articles.models import Article, Comment, AskMe
+from members.models import Member
 
 
 def list_article_page(request):
     articles = Article.objects.all()
+    most_commented_articles = (Article.objects.annotate(total_comment=Count('comment'))
+                               .order_by('-total_comment')[:1])
+    most_commenter = (Member.objects.annotate(total_comment=Count('comment'))
+                          .order_by('-total_comment')[:1])
     context = {
-        'articles':articles
+        'articles':articles,
+        'most_commented_articles': most_commented_articles,
+        'most_commenter': most_commenter
     }
     return render(request, 'articles/list.html', context)
 
@@ -98,13 +105,13 @@ def edit_askme_page(request, askme_id):
     }
     return render(request, 'articles/submit_askme.html', context)
 
-def statistic_page(request):
-    most_commented_articles = (Article.objects.annotate(total_comment=Count('comment'))
-                               .order_by('-total_comment'))
-    most_commenter = (Member.objects.annotate(total_comment=Count('comment'))
-                          .order_by('-total_comment'))
-    context = {
-        'most_commented_articles': most_commented_articles,
-        'most_commenter':most_commenter
-    }
-    return render(request, 'articles/statistic.html', context)
+# def statistic_page(request):
+#     most_commented_articles = (Article.objects.annotate(total_comment=Count('comment'))
+#                                .order_by('-total_comment'))
+#     most_commenter = (Member.objects.annotate(total_comment=Count('comment'))
+#                           .order_by('-total_comment'))
+#     context = {
+#         'most_commented_articles': most_commented_articles,
+#         'most_commenter':most_commenter
+#     }
+#     return render(request, 'articles/statistic.html', context)
