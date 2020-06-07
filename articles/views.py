@@ -36,12 +36,19 @@ def detail_article_page(request, article_id):
     form = CommentForm()
     article = get_object_or_404(Article, id=article_id)
     comments = Comment.objects.filter(article=article_id)
-    views = Article.objects.filter(id=article.id).update(views=F('views') + 1)
+    if not request.user.is_authenticated:
+        views = Article.objects.filter(id=article.id).update(views=F('views') + 1)
+        context = {
+            'form': form,
+            'article': article,
+            'comments': comments,
+            'views':views
+        }
+        return render(request, 'articles/detail.html', context)
     context = {
         'form':form,
         'article':article,
         'comments':comments,
-        'views':views
     }
     return render(request, 'articles/detail.html', context)
 
@@ -87,10 +94,10 @@ def submit_askme_page(request):
 
 def detail_askme_page(request, askme_id):
     question = get_object_or_404(AskMe, id=askme_id)
-    views_count = Article.objects.filter(id=article.id).update(views=F('views') + 1)
+    # views_count = Article.objects.filter(id=article.id).update(views=F('views') + 1)
     context = {
         'question':question,
-        'views_count':views_count
+        # 'views_count':views_count
     }
     return render(request, 'articles/detail_askme.html', context)
 
