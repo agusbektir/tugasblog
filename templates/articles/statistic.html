@@ -34,7 +34,7 @@
     <tbody>
         {% for commenter in most_commenter %}
             <tr>
-                <td>{{ commenter.user.member }}</td>
+                <td><a href="{% url 'members:profile' commenter.user.member %}">{{ commenter.user.member }}</a></td>
                 <td>{{ commenter.total_comment }}</td>
             </tr>
         {% endfor %}
