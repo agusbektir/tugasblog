@@ -36,19 +36,14 @@ def detail_article_page(request, article_id):
     form = CommentForm()
     article = get_object_or_404(Article, id=article_id)
     comments = Comment.objects.filter(article=article_id)
+    views = 0
     if not request.user.is_authenticated:
         views = Article.objects.filter(id=article.id).update(views=F('views') + 1)
-        context = {
-            'form': form,
-            'article': article,
-            'comments': comments,
-            'views':views
-        }
-        return render(request, 'articles/detail.html', context)
     context = {
         'form':form,
         'article':article,
         'comments':comments,
+        'views':views
     }
     return render(request, 'articles/detail.html', context)
 
