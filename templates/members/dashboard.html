@@ -3,7 +3,7 @@
 {% block title %}My Dashboard{% endblock %}
 {% block content %}
     <h1>My Dashboard,</h1>
-
+    <img src="{{ user.member.photo.url }}" width="240">
     <p>Username : {{ user.username }}</p>
     <p>Email : {{ user.email }}</p>
     <hr/>
