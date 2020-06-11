@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 from articles.models import AskMe
-from members.forms import RegisterForm, LoginForm
+from members.forms import RegisterForm, LoginForm, AddPhotoForm
 from members.models import Member
 
 
@@ -51,8 +51,13 @@ def dashboard_page(request):
     if request.user.is_authenticated:
         member = request.user.member
         questions = AskMe.objects.filter(author=member)
+        # photo_form = AddPhotoForm(request.POST or None, use_required_attribute=False)
+        # if request.method == 'POST':
+        #     if photo_form.is_valid():
+        #         photo_form.save()
         context = {
             'questions':questions,
+            # 'photo_form':photo_form
         }
         return render(request, 'members/dashboard.html', context)
 

@@ -3,7 +3,18 @@
 {% block title %}My Dashboard{% endblock %}
 {% block content %}
     <h1>My Dashboard,</h1>
-    <img src="{{ user.member.photo.url }}" width="240">
+    {% if user.member.photo.url %}
+        <img src="{{ user.member.photo.url }}" width="240">
+    {% else %}
+        {% with default_image=STATIC_URL|add:"default.jpeg" %}
+             {{ user.member.photo.url|default:"default.jpeg" }}
+        {% endwith %}
+        <form method="post">
+        {{ photo_form.as_p }}
+        {% csrf_token %}
+        <input type="submit" value="Add Photo">
+        </form>
+    {% endif %}
     <p>Username : {{ user.username }}</p>
     <p>Email : {{ user.email }}</p>
     <hr/>
