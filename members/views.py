@@ -70,22 +70,26 @@ def profile_page(request, username):
 def home_page(request):
     return render(request, 'home.html')
 
+@login_required(login_url='members:login')
 def edit_photo_profile(request, username):
-    if request.user.is_authenticated:
-        member = get_object_or_404(User, username=username)
-        if request.method == 'POST':
-            form = AddPhotoForm(request.POST, request.FILES, instance=member, use_required_attribute=False)
-            if form.is_valid():
-                # form.save()
-                photo = form.save(commit=False)
-                photo.user = request.user
-                photo.save()
-            return redirect('members:dashboard')
+    # if request.user.is_authenticated:
+    #     member = get_object_or_404(User, username=request.user)
     # else:
-    #     form = AddPhotoForm()
+    #     member = member(username=username)
+    # form = AddPhotoForm()
+    if request.method == 'POST':
+        form = AddPhotoForm(request.POST, request.FILES, instance=request.user.member, use_required_attribute=False)
+        if form.is_valid():
+            photo = form.save(commit=False)
+            # photo.user = request.user
+            photo.save()
+            return redirect('members:dashboard')
+        else:
+            form = AddPhotoForm(instance=request.user.member)
+
     # context = {
-    #     'member':member,
-    #     'form':form
+    #     'member': member,
+    #     'form': form
     # }
     # return render(request, 'members/dashboard.html', context)
-    # return redirect('members:dashboard')
+    return redirect('members:dashboard')
