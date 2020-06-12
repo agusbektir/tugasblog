@@ -3,16 +3,15 @@
 {% block title %}My Dashboard{% endblock %}
 {% block content %}
     <h1>My Dashboard,</h1>
-    {% if user.member.photo.url %}
-        <img src="{{ user.member.photo.url }}" width="240">
+
+    {% if member.photo %}
+        <img src="{{ member.get_photo_url }}" width="240">
     {% else %}
-        {% with default_image=STATIC_URL|add:"default.jpeg" %}
-             {{ user.member.photo.url|default:"default.jpeg" }}
-        {% endwith %}
-        <form method="post">
-        {{ photo_form.as_p }}
+        <img src="/media/default.jpeg">
+        <form method="post" enctype="multipart/form-data" action="{% url 'members:edit_photo_profile' user.username %}">
+        {{ form.as_p }}
         {% csrf_token %}
-        <input type="submit" value="Add Photo">
+        <button type="submit">Upload</button>
         </form>
     {% endif %}
     <p>Username : {{ user.username }}</p>

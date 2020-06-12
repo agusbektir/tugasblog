@@ -5,7 +5,8 @@ from members.views import (
     logout_page,
     dashboard_page,
     profile_page,
-    home_page
+    home_page,
+    edit_photo_profile
 )
 
 app_name = 'members'
@@ -17,4 +18,5 @@ urlpatterns = [
     path('dashboard/', dashboard_page, name='dashboard'),
     path('profile/<username>', profile_page, name='profile'),
     path('home', home_page, name='home'),
+    path('dashboard/<username>', edit_photo_profile, name='edit_photo_profile'),
 ]

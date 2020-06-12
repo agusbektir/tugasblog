@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.core.files.storage import FileSystemStorage
 
 from articles.models import AskMe
 from members.forms import RegisterForm, LoginForm, AddPhotoForm
@@ -50,14 +51,12 @@ def logout_page(request):
 def dashboard_page(request):
     if request.user.is_authenticated:
         member = request.user.member
+        form = AddPhotoForm()
         questions = AskMe.objects.filter(author=member)
-        # photo_form = AddPhotoForm(request.POST or None, use_required_attribute=False)
-        # if request.method == 'POST':
-        #     if photo_form.is_valid():
-        #         photo_form.save()
         context = {
             'questions':questions,
-            # 'photo_form':photo_form
+            'form':form,
+            'member':member
         }
         return render(request, 'members/dashboard.html', context)
 
@@ -71,4 +70,22 @@ def profile_page(request, username):
 def home_page(request):
     return render(request, 'home.html')
 
-
+def edit_photo_profile(request, username):
+    if request.user.is_authenticated:
+        member = get_object_or_404(User, username=username)
+        if request.method == 'POST':
+            form = AddPhotoForm(request.POST, request.FILES, instance=member, use_required_attribute=False)
+            if form.is_valid():
+                # form.save()
+                photo = form.save(commit=False)
+                photo.user = request.user
+                photo.save()
+            return redirect('members:dashboard')
+    # else:
+    #     form = AddPhotoForm()
+    # context = {
+    #     'member':member,
+    #     'form':form
+    # }
+    # return render(request, 'members/dashboard.html', context)
+    # return redirect('members:dashboard')
