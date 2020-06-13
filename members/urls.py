@@ -6,7 +6,7 @@ from members.views import (
     dashboard_page,
     profile_page,
     home_page,
-    edit_photo_profile
+    delete_photo_profile, upload_photo_profile
 )
 
 app_name = 'members'
@@ -18,5 +18,6 @@ urlpatterns = [
     path('dashboard/', dashboard_page, name='dashboard'),
     path('profile/<username>', profile_page, name='profile'),
     path('home', home_page, name='home'),
-    path('dashboard/<username>', edit_photo_profile, name='edit_photo_profile'),
+    path('dashboard/upload/', upload_photo_profile, name='upload_photo_profile'),
+    path('dashboard/delete/', delete_photo_profile, name='delete_photo_profile'),
 ]

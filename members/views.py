@@ -71,12 +71,7 @@ def home_page(request):
     return render(request, 'home.html')
 
 @login_required(login_url='members:login')
-def edit_photo_profile(request, username):
-    # if request.user.is_authenticated:
-    #     member = get_object_or_404(User, username=request.user)
-    # else:
-    #     member = member(username=username)
-    # form = AddPhotoForm()
+def upload_photo_profile(request):
     if request.method == 'POST':
         form = AddPhotoForm(request.POST, request.FILES, instance=request.user.member, use_required_attribute=False)
         if form.is_valid():
@@ -86,10 +81,11 @@ def edit_photo_profile(request, username):
             return redirect('members:dashboard')
         else:
             form = AddPhotoForm(instance=request.user.member)
+    return redirect('members:dashboard')
 
-    # context = {
-    #     'member': member,
-    #     'form': form
-    # }
-    # return render(request, 'members/dashboard.html', context)
+@login_required(login_url='members:login')
+def delete_photo_profile(request):
+    if request.method == 'POST':
+        delete_photo = request.user.member.photo
+        delete_photo.delete()
     return redirect('members:dashboard')

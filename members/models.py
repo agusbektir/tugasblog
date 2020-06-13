@@ -13,5 +13,9 @@ class Member(models.Model):
         else:
             return "/media/default.jpeg"
 
+    def delete(self, *args, **kwargs):
+        self.photo.delete()
+        super().delete(*args, **kwargs)
+
     def __str__(self):
         return self.user.username

@@ -6,15 +6,18 @@
 
     {% if member.photo %}
         <img src="{{ member.get_photo_url }}" width="240">
-        <form method="post" enctype="multipart/form-data" action="{% url 'members:edit_photo_profile' user.username %}">
+        <form method="post" enctype="multipart/form-data" action="{% url 'members:upload_photo_profile' %}">
         {{ form.as_p }}
         {% csrf_token %}
         <button type="submit">Replace</button>
-        <a href="#"><button>Delete</button></a>
+        </form>
+        <form method="post"  action="{% url 'members:delete_photo_profile' %}">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
         </form>
     {% else %}
         <img src="/media/default.jpeg">
-        <form method="post" enctype="multipart/form-data" action="{% url 'members:edit_photo_profile' user.username %}">
+        <form method="post" enctype="multipart/form-data" action="{% url 'members:upload_photo_profile' %}">
         {{ form.as_p }}
         {% csrf_token %}
         <button type="submit">Upload</button>
