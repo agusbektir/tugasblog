@@ -1,3 +1,4 @@
+import os
 from django.db import models
 
 from helpers.models import BaseModel
@@ -10,6 +11,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+def image_article_path(instance, filename):
+    return os.path.join('article_pic', instance.title, filename)
+
+
 class Article(models.Model):
     title = models.CharField(max_length=120)
     content = models.TextField()
@@ -18,6 +23,7 @@ class Article(models.Model):
     is_published = models.BooleanField(default=False)
     views = models.PositiveIntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    image = models.ImageField(blank=True, null=True, upload_to=image_article_path, default='')
 
     def __str__(self):
         return self.title

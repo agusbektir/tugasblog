@@ -76,7 +76,6 @@ def upload_photo_profile(request):
         form = AddPhotoForm(request.POST, request.FILES, instance=request.user.member, use_required_attribute=False)
         if form.is_valid():
             photo = form.save(commit=False)
-            # photo.user = request.user
             photo.save()
             return redirect('members:dashboard')
         else:

@@ -22,13 +22,16 @@ def list_article_page(request):
     }
     return render(request, 'articles/list.html', context)
 
+@login_required(login_url='members:login')
 def submit_article_page(request):
-    form = ArticleForm(request.POST or None, use_required_attribute=False)
-    if form.is_valid():
-        form.save()
-        return redirect('articles:list')
+    form = ArticleForm()
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('articles:list')
     context = {
-        'form':form
+        'form':form,
     }
     return render(request, 'articles/submit.html', context)
 
@@ -43,7 +46,7 @@ def detail_article_page(request, article_id):
         'form':form,
         'article':article,
         'comments':comments,
-        'views':views
+        'views':views,
     }
     return render(request, 'articles/detail.html', context)
 

@@ -3,6 +3,9 @@
 {% block content %}
     <h1>{{ article.title }}</h1>
     <h2>Published by {{ article.published_at }} on {{ article.category }}</h2>
+    {% if article.image %}
+        <img src="{{ article.image.url }}" width="240">
+    {% endif %}
     <p>{{ article.content }}</p>
     <p>Dilihat : {{ article.views }}</p>
     <hr/>
